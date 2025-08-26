@@ -2,8 +2,8 @@ import winston from 'winston';
 
 const { combine, timestamp, errors, colorize, printf } = winston.format;
 
-const customFormat = printf(({ level, message, timestamp, stack }) => {
-  return `${timestamp} [${level}]: ${stack || message}`;
+const customFormat = printf((info) => {
+  return `${info.timestamp} [${info.level}]: ${info.stack || info.message}`;
 });
 
 export const logger = winston.createLogger({
@@ -15,7 +15,7 @@ export const logger = winston.createLogger({
   ),
   defaultMeta: { service: 'pantum-coupon-system' },
   transports: [
-    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
+    new winston.transports.File({ filename: 'logs/error.log' }),
     new winston.transports.File({ filename: 'logs/combined.log' }),
   ],
 });

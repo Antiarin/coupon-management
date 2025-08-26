@@ -13,5 +13,5 @@ export const validateRequest = (req: Request, res: Response, next: NextFunction)
     });
   }
   
-  next();
+  return next();
 };
