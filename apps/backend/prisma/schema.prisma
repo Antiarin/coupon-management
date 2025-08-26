@@ -1,0 +1,138 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum CouponStatus {
+  ACTIVE
+  USED
+  EXPIRED
+  CANCELLED
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      UserRole @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  coupons CouponUsage[]
+
+  @@map("users")
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Float
+  category    String
+  imageUrl    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  coupons        Coupon[]
+  couponRules    CouponRule[]
+  purchaseOrders PurchaseOrder[]
+
+  @@map("products")
+}
+
+model PurchaseOrder {
+  id           String   @id @default(cuid())
+  orderNumber  String   @unique
+  customerName String
+  email        String
+  phone        String?
+  totalAmount  Float
+  productId    String
+  serialNumber String?
+  invoiceUrl   String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  product Product @relation(fields: [productId], references: [id])
+  coupons Coupon[]
+
+  @@map("purchase_orders")
+}
+
+model Coupon {
+  id               String       @id @default(cuid())
+  code             String       @unique
+  discountType     DiscountType
+  discountValue    Float
+  minimumOrderValue Float?
+  maxDiscountAmount Float?
+  expiresAt        DateTime
+  usageLimit       Int          @default(1)
+  usedCount        Int          @default(0)
+  status           CouponStatus @default(ACTIVE)
+  productId        String?
+  purchaseOrderId  String?
+  isActive         Boolean      @default(true)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  // Relations
+  product       Product?      @relation(fields: [productId], references: [id])
+  purchaseOrder PurchaseOrder? @relation(fields: [purchaseOrderId], references: [id])
+  rules         CouponRule[]
+  usage         CouponUsage[]
+
+  @@map("coupons")
+}
+
+model CouponRule {
+  id        String   @id @default(cuid())
+  couponId  String
+  productId String?
+  category  String?
+  name      String
+  value     String
+  createdAt DateTime @default(now())
+
+  // Relations
+  coupon  Coupon   @relation(fields: [couponId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id])
+
+  @@map("coupon_rules")
+}
+
+model CouponUsage {
+  id        String   @id @default(cuid())
+  couponId  String
+  userId    String
+  orderValue Float?
+  discount   Float
+  usedAt    DateTime @default(now())
+
+  // Relations
+  coupon Coupon @relation(fields: [couponId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("coupon_usage")
+}

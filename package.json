@@ -1,0 +1,32 @@
+{
+  "name": "pantum-coupon-system",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json}\"",
+    "check-types": "turbo run check-types",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "db:generate": "turbo run db:generate",
+    "db:push": "turbo run db:push",
+    "db:studio": "turbo run db:studio",
+    "seed": "turbo run seed"
+  },
+  "devDependencies": {
+    "@turbo/gen": "^1.10.12",
+    "prettier": "^3.2.5",
+    "turbo": "^2.5.0",
+    "typescript": "^5.4.5"
+  },
+  "packageManager": "pnpm@8.15.6",
+  "engines": {
+    "node": ">=18"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
