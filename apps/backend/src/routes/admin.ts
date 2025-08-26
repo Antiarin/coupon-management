@@ -161,7 +161,7 @@ router.patch(
 );
 
 // Get analytics/statistics
-router.get('/analytics', async (req, res) => {
+router.get('/analytics', async (req: Request, res: Response) => {
   try {
     const [
       totalCoupons,

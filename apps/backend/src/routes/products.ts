@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { logger } from '../utils/logger';
 import { prisma } from '../lib/prisma';
@@ -6,7 +6,7 @@ import { prisma } from '../lib/prisma';
 const router = Router();
 
 // Get all products
-router.get('/', async (req, res) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
     const products = await prisma.product.findMany({
       where: { isActive: true },
@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get product by ID
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
