@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { body, param, query } from 'express-validator';
 import { StatusCodes } from 'http-status-codes';
 import { CouponGenerator } from '../utils/couponGenerator';
@@ -16,7 +16,7 @@ router.get(
     query('orderValue').optional().isFloat({ min: 0 }),
   ],
   validateRequest,
-  async (req, res) => {
+  async (req: Request, res: Response) => {
     try {
       const { code } = req.params;
       const orderValue = req.query.orderValue ? parseFloat(req.query.orderValue as string) : undefined;
@@ -59,7 +59,7 @@ router.post(
     body('orderValue').isFloat({ min: 0 }),
   ],
   validateRequest,
-  async (req, res) => {
+  async (req: Request, res: Response) => {
     try {
       const { code, userId, orderValue } = req.body;
 
@@ -72,12 +72,12 @@ router.post(
         });
       }
 
-      const discount = CouponGenerator.calculateDiscount(validation.coupon, orderValue);
+      const discount = CouponGenerator.calculateDiscount(validation.coupon!, orderValue);
 
       // Create usage record
       await prisma.couponUsage.create({
         data: {
-          couponId: validation.coupon.id,
+          couponId: validation.coupon!.id,
           userId,
           orderValue,
           discount,
@@ -86,10 +86,10 @@ router.post(
 
       // Update coupon usage count
       const updatedCoupon = await prisma.coupon.update({
-        where: { id: validation.coupon.id },
+        where: { id: validation.coupon!.id },
         data: {
           usedCount: { increment: 1 },
-          status: validation.coupon.usedCount + 1 >= validation.coupon.usageLimit ? 'USED' : 'ACTIVE',
+          status: validation.coupon!.usedCount + 1 >= validation.coupon!.usageLimit ? 'USED' : 'ACTIVE',
         },
       });
 
@@ -117,7 +117,7 @@ router.get(
   '/:code',
   [param('code').isString().isLength({ min: 3 })],
   validateRequest,
-  async (req, res) => {
+  async (req: Request, res: Response) => {
     try {
       const { code } = req.params;
 

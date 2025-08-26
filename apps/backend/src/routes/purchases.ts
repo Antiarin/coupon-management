@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { body } from 'express-validator';
 import { StatusCodes } from 'http-status-codes';
 import { CouponGenerator } from '../utils/couponGenerator';
@@ -21,7 +21,7 @@ router.post(
     body('serialNumber').optional().isString(),
   ],
   validateRequest,
-  async (req, res) => {
+  async (req: Request, res: Response) => {
     try {
       const { customerName, email, phone, productId, totalAmount, serialNumber } = req.body;
 
@@ -99,7 +99,7 @@ router.post(
     body('email').isEmail(),
   ],
   validateRequest,
-  async (req, res) => {
+  async (req: Request, res: Response) => {
     try {
       const { invoiceNumber, serialNumber, email } = req.body;
 
