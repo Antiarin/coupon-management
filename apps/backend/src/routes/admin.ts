@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { body, query } from 'express-validator';
 import { StatusCodes } from 'http-status-codes';
 import { CouponGenerator } from '../utils/couponGenerator';
@@ -18,7 +18,7 @@ router.get(
     query('search').optional().isString(),
   ],
   validateRequest,
-  async (req, res) => {
+  async (req: Request, res: Response) => {
     try {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
@@ -103,7 +103,7 @@ router.post(
     body('productId').optional().isString(),
   ],
   validateRequest,
-  async (req, res) => {
+  async (req: Request, res: Response) => {
     try {
       const couponData = req.body;
 
@@ -131,7 +131,7 @@ router.patch(
     body('status').isIn(['ACTIVE', 'CANCELLED']),
   ],
   validateRequest,
-  async (req, res) => {
+  async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
       const { status } = req.body;

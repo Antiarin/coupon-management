@@ -345,7 +345,7 @@ export default function AdminPage() {
                         Created {formatDate(coupon.createdAt)}
                       </div>
                     </div>
-                    <Badge size="sm" className={getStatusColor(coupon.status)}>
+                    <Badge className={getStatusColor(coupon.status)}>
                       {coupon.status}
                     </Badge>
                   </div>
