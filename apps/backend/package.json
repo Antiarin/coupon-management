@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "nodemon --watch src --exec 'tsx src/server.ts' -e ts",
-    "build": "rimraf dist && tsc && npm run copy-assets",
+    "build": "prisma generate && rimraf dist && tsc && npm run copy-assets",
+    "vercel-build": "prisma generate && prisma db push && tsc",
     "copy-assets": "copyfiles -f src/templates/**/* dist/templates/email",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
@@ -15,7 +16,8 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "check-types": "tsc --noEmit",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.11.0",
