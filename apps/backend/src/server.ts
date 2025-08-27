@@ -29,7 +29,10 @@ const limiter = rateLimit({
 app.use(helmet());
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-frontend-domain.vercel.app'] 
+    ? [
+        'https://coupon-management-frontend.vercel.app',
+        process.env.FRONTEND_URL
+      ].filter(Boolean)
     : ['http://localhost:3010', 'http://localhost:5000'],
   credentials: true,
 }));
