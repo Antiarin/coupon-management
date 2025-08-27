@@ -26,13 +26,18 @@ const limiter = rateLimit({
 });
 
 // Middleware
-app.use(helmet());
+// Helmet disabled temporarily for CORS testing
+// TODO: Re-enable helmet with proper CORS configuration
+// app.use(helmet());
+
 // CORS - Allow all origins for testing (TODO: Restrict in production)
 app.use(cors({
   origin: true, // Allow all origins
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  exposedHeaders: ['Content-Length', 'X-Request-Id'],
+  maxAge: 86400 // 24 hours
 }));
 app.use(limiter);
 app.use(morgan('combined', {
@@ -42,7 +47,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Health check
-app.get('/health', (req: Request, res: Response) => {
+app.get('/health', (_req: Request, res: Response) => {
   res.json({ 
     status: 'ok', 
     timestamp: new Date().toISOString(),

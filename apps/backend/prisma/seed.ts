@@ -157,12 +157,11 @@ async function main() {
     coupons.push(coupon);
   }
 
-  // Create some additional manual coupons for demo with FIXED codes
+  // Create demo coupons with EXACT codes from frontend
   const fixedCoupons = [
-    { code: 'SAVE-20-AB', discountType: 'PERCENTAGE' as const, discountValue: 20, minimumOrderValue: 50 },
-    { code: 'DEMO-15-PC', discountType: 'PERCENTAGE' as const, discountValue: 15, minimumOrderValue: 30 },
-    { code: 'TEST-25-XY', discountType: 'PERCENTAGE' as const, discountValue: 25, minimumOrderValue: 100 },
-    { code: 'FIXED-10-OFF', discountType: 'FIXED_AMOUNT' as const, discountValue: 10, minimumOrderValue: 40 },
+    { code: 'MV4Q-J7KQ-KU', discountType: 'PERCENTAGE' as const, discountValue: 15, minimumOrderValue: 30 },
+    { code: 'XCMK-1OCK-E6', discountType: 'PERCENTAGE' as const, discountValue: 15, minimumOrderValue: 30 },
+    { code: '4F1I-AD1K-GH', discountType: 'PERCENTAGE' as const, discountValue: 20, minimumOrderValue: 50 },
   ];
 
   const manualCoupons = await Promise.all(
@@ -241,14 +240,14 @@ async function main() {
   console.log(`   - ${coupons.length + 1} coupons created (including expired)`);
   console.log(`   - 1 coupon usage record created`);
 
-  console.log(`\n🎫 Available test coupon codes:`);
-  console.log(`   📌 Fixed test coupons (always available):`);
-  console.log(`      • SAVE-20-AB - 20% off (min $50)`);
-  console.log(`      • DEMO-15-PC - 15% off (min $30)`);
-  console.log(`      • TEST-25-XY - 25% off (min $100)`);
-  console.log(`      • FIXED-10-OFF - $10 off (min $40)`);
-  console.log(`      • EXPIRED-DEMO - EXPIRED (for testing)`);
-  console.log(`\n   🎲 Generated coupons from purchases:`);
+  console.log(`\n🎫 Available demo coupon codes (matching frontend):`);
+  console.log(`   📌 Active coupons:`);
+  console.log(`      • MV4Q-J7KQ-KU - 15% off (min $30)`);
+  console.log(`      • XCMK-1OCK-E6 - 15% off (min $30)`);
+  console.log(`      • 4F1I-AD1K-GH - 20% off (min $50)`);
+  console.log(`   ❌ Expired coupon:`);
+  console.log(`      • EXPIRED-DEMO - For testing expired coupon flow`);
+  console.log(`\n   🎲 Additional generated coupons from purchases:`);
   coupons.slice(0, 3).forEach((coupon, index) => {
     console.log(`      ${index + 1}. ${coupon.code} - ${coupon.discountType === 'PERCENTAGE' ? coupon.discountValue + '%' : '$' + coupon.discountValue} off`);
   });
