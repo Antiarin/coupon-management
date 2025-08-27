@@ -32,7 +32,7 @@ app.use(cors({
     ? [
         'https://coupon-management-frontend.vercel.app',
         process.env.FRONTEND_URL
-      ].filter(Boolean)
+      ].filter(Boolean) as string[]
     : ['http://localhost:3010', 'http://localhost:5000'],
   credentials: true,
 }));
