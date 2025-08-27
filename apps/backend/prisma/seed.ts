@@ -153,31 +153,41 @@ async function main() {
     coupons.push(coupon);
   }
 
-  // Create some additional manual coupons for demo
-  const manualCoupons = await Promise.all([
-    CouponGenerator.createCoupon({
-      discountType: 'PERCENTAGE',
-      discountValue: 25,
-      minimumOrderValue: 150,
-      maxDiscountAmount: 50,
-      expiryDays: 60,
-      usageLimit: 1,
-    }),
-    CouponGenerator.createCoupon({
-      discountType: 'FIXED_AMOUNT',
-      discountValue: 20,
-      minimumOrderValue: 80,
-      expiryDays: 45,
-      usageLimit: 1,
-    }),
-    CouponGenerator.createCoupon({
-      discountType: 'PERCENTAGE',
-      discountValue: 10,
-      minimumOrderValue: 30,
-      expiryDays: 30,
-      usageLimit: 3,
-    }),
-  ]);
+  // Create some additional manual coupons for demo with FIXED codes
+  const fixedCoupons = [
+    { code: 'SAVE-20-AB', discountType: 'PERCENTAGE' as const, discountValue: 20, minimumOrderValue: 50 },
+    { code: 'DEMO-15-PC', discountType: 'PERCENTAGE' as const, discountValue: 15, minimumOrderValue: 30 },
+    { code: 'TEST-25-XY', discountType: 'PERCENTAGE' as const, discountValue: 25, minimumOrderValue: 100 },
+    { code: 'FIXED-10-OFF', discountType: 'FIXED_AMOUNT' as const, discountValue: 10, minimumOrderValue: 40 },
+  ];
+
+  const manualCoupons = await Promise.all(
+    fixedCoupons.map(async (couponData) => {
+      // Check if coupon already exists
+      const existing = await prisma.coupon.findUnique({
+        where: { code: couponData.code }
+      });
+      
+      if (existing) {
+        console.log(`   ⚠️ Coupon ${couponData.code} already exists, skipping...`);
+        return existing;
+      }
+
+      return prisma.coupon.create({
+        data: {
+          code: couponData.code,
+          discountType: couponData.discountType,
+          discountValue: couponData.discountValue,
+          minimumOrderValue: couponData.minimumOrderValue,
+          maxDiscountAmount: couponData.discountType === 'PERCENTAGE' ? couponData.discountValue * 2 : undefined,
+          expiresAt: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 90 days from now
+          usageLimit: 5,
+          usedCount: 0,
+          status: 'ACTIVE',
+        },
+      });
+    })
+  );
 
   coupons.push(...manualCoupons);
 
@@ -227,11 +237,17 @@ async function main() {
   console.log(`   - ${coupons.length + 1} coupons created (including expired)`);
   console.log(`   - 1 coupon usage record created`);
 
-  console.log(`\n🎫 Sample coupon codes:`);
+  console.log(`\n🎫 Available test coupon codes:`);
+  console.log(`   📌 Fixed test coupons (always available):`);
+  console.log(`      • SAVE-20-AB - 20% off (min $50)`);
+  console.log(`      • DEMO-15-PC - 15% off (min $30)`);
+  console.log(`      • TEST-25-XY - 25% off (min $100)`);
+  console.log(`      • FIXED-10-OFF - $10 off (min $40)`);
+  console.log(`      • EXPIRED-DEMO - EXPIRED (for testing)`);
+  console.log(`\n   🎲 Generated coupons from purchases:`);
   coupons.slice(0, 3).forEach((coupon, index) => {
-    console.log(`   ${index + 1}. ${coupon.code} - ${coupon.discountType === 'PERCENTAGE' ? coupon.discountValue + '%' : '$' + coupon.discountValue} off`);
+    console.log(`      ${index + 1}. ${coupon.code} - ${coupon.discountType === 'PERCENTAGE' ? coupon.discountValue + '%' : '$' + coupon.discountValue} off`);
   });
-  console.log(`   4. ${expiredCoupon.code} - EXPIRED (for testing)`);
 }
 
 main()
