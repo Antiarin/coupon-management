@@ -1,0 +1,10 @@
+[build]
+command = "pnpm install && pnpm build"
+
+[deploy]
+healthcheckPath = "/health"
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
+
+[env]
+NODE_ENV = "production"
