@@ -27,14 +27,12 @@ const limiter = rateLimit({
 
 // Middleware
 app.use(helmet());
+// CORS - Allow all origins for testing (TODO: Restrict in production)
 app.use(cors({
-  origin: process.env.VERCEL || process.env.NODE_ENV === 'production'
-    ? [
-        'https://coupon-management-frontend.vercel.app',
-        process.env.FRONTEND_URL
-      ].filter(Boolean) as string[]
-    : ['http://localhost:3010', 'http://localhost:5000'],
+  origin: true, // Allow all origins
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(limiter);
 app.use(morgan('combined', {
