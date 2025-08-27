@@ -28,7 +28,7 @@ const limiter = rateLimit({
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
+  origin: process.env.VERCEL || process.env.NODE_ENV === 'production'
     ? [
         'https://coupon-management-frontend.vercel.app',
         process.env.FRONTEND_URL
