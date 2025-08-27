@@ -11,7 +11,48 @@ import { errorHandler } from './middleware/errorHandler';
 import { notFoundHandler } from './middleware/notFoundHandler';
 import { apiRouter } from './routes';
 
+// Load environment variables
 dotenv.config();
+
+// Add startup error handling
+process.on('uncaughtException', (error) => {
+  console.error('❌ Uncaught Exception:', error);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
+});
+
+// Check critical environment variables
+const requiredEnvVars = ['DATABASE_URL', 'JWT_SECRET'];
+const missingEnvVars = requiredEnvVars.filter(env => !process.env[env]);
+
+if (missingEnvVars.length > 0) {
+  console.error('❌ Missing required environment variables:', missingEnvVars);
+  console.error('Available env vars:', Object.keys(process.env).filter(key => key.includes('DATABASE') || key.includes('JWT')));
+  process.exit(1);
+}
+
+console.log('✅ Environment variables loaded successfully');
+
+// Test database connection early
+async function testDbConnection() {
+  try {
+    const { prisma } = await import('./lib/prisma');
+    await prisma.$connect();
+    console.log('✅ Database connection successful');
+  } catch (error) {
+    console.error('❌ Database connection failed:', error);
+    // Don't exit in serverless environment, just log the error
+  }
+}
+
+// Test database connection if not in serverless environment
+if (!process.env.VERCEL) {
+  testDbConnection();
+}
 
 const app = express();
 const server = createServer(app);
@@ -78,11 +119,19 @@ app.use(notFoundHandler);
 // Global error handler
 app.use(errorHandler);
 
-server.listen(PORT, () => {
-  logger.info(`🚀 Server is running on port ${PORT}`);
-  logger.info(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  logger.info(`🎯 Demo mode: ${process.env.DEMO_MODE === 'true' ? 'enabled' : 'disabled'}`);
-});
+try {
+  server.listen(PORT, () => {
+    console.log(`🚀 Server is running on port ${PORT}`);
+    console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🎯 Demo mode: ${process.env.DEMO_MODE === 'true' ? 'enabled' : 'disabled'}`);
+    logger.info(`🚀 Server is running on port ${PORT}`);
+    logger.info(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+    logger.info(`🎯 Demo mode: ${process.env.DEMO_MODE === 'true' ? 'enabled' : 'disabled'}`);
+  });
+} catch (error) {
+  console.error('❌ Failed to start server:', error);
+  process.exit(1);
+}
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
@@ -101,4 +150,8 @@ process.on('SIGINT', () => {
   });
 });
 
+// Export for Vercel serverless functions
 export default app;
+
+// Also export as a named export for compatibility
+export { app as handler };
