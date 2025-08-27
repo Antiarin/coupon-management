@@ -55,6 +55,18 @@ app.get('/health', (req: Request, res: Response) => {
 // API routes
 app.use('/api', apiRouter);
 
+// Root route for debugging
+app.get('/', (_req: Request, res: Response) => {
+  res.json({ 
+    message: 'Pantum Coupon System API',
+    endpoints: {
+      health: '/health',
+      api: '/api/*'
+    },
+    timestamp: new Date().toISOString()
+  });
+});
+
 // 404 handler
 app.use(notFoundHandler);
 
