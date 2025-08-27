@@ -8,7 +8,8 @@ import {
   Settings, 
   Gift, 
   Sparkles,
-  ArrowRight 
+  ArrowRight,
+  Phone 
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -46,6 +47,12 @@ export default function HomePage() {
               <Link href="/validate-coupon">
                 <Ticket className="mr-2 h-5 w-5" />
                 Validate Coupon
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="text-lg">
+              <Link href="/generate-coupon">
+                <Phone className="mr-2 h-5 w-5" />
+                Generate Coupon
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="text-lg">
@@ -127,7 +134,7 @@ export default function HomePage() {
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">
             Quick Actions
           </h2>
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader className="text-center">
                 <Ticket className="h-12 w-12 text-blue-600 mx-auto mb-4" />
@@ -140,6 +147,23 @@ export default function HomePage() {
                 <Button asChild className="w-full">
                   <Link href="/validate-coupon">
                     Get Started
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader className="text-center">
+                <Phone className="h-12 w-12 text-green-600 mx-auto mb-4" />
+                <CardTitle>Generate Coupon</CardTitle>
+                <CardDescription>
+                  Use your invoice and phone number to generate a new discount coupon
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="text-center">
+                <Button asChild className="w-full">
+                  <Link href="/generate-coupon">
+                    Generate Now
                   </Link>
                 </Button>
               </CardContent>
