@@ -49,6 +49,10 @@ export default function ValidateCouponPage() {
       toast.error('Please enter a coupon code');
       return;
     }
+    if (!orderValue || parseFloat(orderValue) <= 0) {
+      toast.error('Please enter a valid order value');
+      return;
+    }
     setShouldValidate(true);
     refetch();
   };
@@ -120,7 +124,7 @@ export default function ValidateCouponPage() {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="order-value">Order Value (optional)</Label>
+                <Label htmlFor="order-value">Order Value *</Label>
                 <div className="relative">
                   <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
                   <Input
@@ -132,17 +136,18 @@ export default function ValidateCouponPage() {
                     className="pl-10"
                     min="0"
                     step="0.01"
+                    required
                   />
                 </div>
                 <p className="text-sm text-gray-500">
-                  Enter your order value to see the exact discount amount
+                  Enter your order value to calculate the discount amount
                 </p>
               </div>
 
               <div className="flex gap-4">
                 <Button 
                   onClick={handleValidate}
-                  disabled={isLoading || !couponCode.trim()}
+                  disabled={isLoading || !couponCode.trim() || !orderValue || parseFloat(orderValue) <= 0}
                   className="flex-1"
                 >
                   {isLoading ? (

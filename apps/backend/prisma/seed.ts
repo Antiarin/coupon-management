@@ -145,17 +145,52 @@ async function main() {
         serialNumber: 'TL410H-123456',
       },
     }),
+    // Orders for testing generate coupon flow (without coupons)
+    prisma.purchaseOrder.create({
+      data: {
+        orderNumber: 'GEN-2024-001',
+        customerName: 'Test User 1',
+        email: 'test1@example.com',
+        phone: '+1234567001',
+        totalAmount: 79.99,
+        productId: products[4].id,
+      },
+    }),
+    prisma.purchaseOrder.create({
+      data: {
+        orderNumber: 'GEN-2024-002',
+        customerName: 'Test User 2',
+        email: 'test2@example.com',
+        phone: '+1234567002',
+        totalAmount: 149.99,
+        productId: products[0].id,
+      },
+    }),
+    prisma.purchaseOrder.create({
+      data: {
+        orderNumber: 'GEN-2024-003',
+        customerName: 'Test User 3',
+        email: 'test3@example.com',
+        phone: '+1234567003',
+        totalAmount: 199.99,
+        productId: products[1].id,
+      },
+    }),
   ]);
 
   console.log(`✅ Created ${purchaseOrders.length} demo purchase orders`);
 
-  // Generate coupons for the purchase orders
+  // Generate coupons ONLY for the first 3 purchase orders (PAN-2024-*)
+  // Leave INV-2024-* orders without coupons for testing the generate flow
   const coupons: any[] = [];
   
-  for (const purchaseOrder of purchaseOrders) {
-    const coupon = await CouponGenerator.createCouponAfterPurchase(purchaseOrder.id);
+  for (let i = 0; i < 3; i++) {
+    const coupon = await CouponGenerator.createCouponAfterPurchase(purchaseOrders[i].id);
     coupons.push(coupon);
   }
+  
+  console.log(`✅ Generated coupons for first 3 orders only`);
+  console.log(`📝 Orders GEN-2024-001, GEN-2024-002, GEN-2024-003 are available for testing coupon generation`);
 
   // Create demo coupons with EXACT codes from frontend
   const fixedCoupons = [

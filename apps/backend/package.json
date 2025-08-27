@@ -54,5 +54,8 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }
