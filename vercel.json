@@ -9,12 +9,12 @@
       }
     },
     {
-      "src": "apps/backend/src/server.ts",
+      "src": "apps/backend/dist/server.js",
       "use": "@vercel/node",
       "config": {
         "includeFiles": [
           "apps/backend/prisma/schema.prisma",
-          "apps/backend/src/**"
+          "apps/backend/dist/**"
         ]
       }
     }
@@ -22,7 +22,7 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "apps/backend/src/server.ts"
+      "dest": "apps/backend/dist/server.js"
     },
     {
       "src": "/(.*)",
