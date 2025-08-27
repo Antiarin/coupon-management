@@ -1,6 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { CouponGenerator } from '../src/utils/couponGenerator';
 
+declare const process: {
+  exit: (code: number) => void;
+};
+
 const prisma = new PrismaClient();
 
 async function main() {
@@ -146,7 +150,7 @@ async function main() {
   console.log(`✅ Created ${purchaseOrders.length} demo purchase orders`);
 
   // Generate coupons for the purchase orders
-  const coupons = [];
+  const coupons: any[] = [];
   
   for (const purchaseOrder of purchaseOrders) {
     const coupon = await CouponGenerator.createCouponAfterPurchase(purchaseOrder.id);
