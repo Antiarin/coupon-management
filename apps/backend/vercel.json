@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "buildCommand": "cd ../.. && pnpm build --filter=backend",
+  "outputDirectory": "dist",
   "env": {
     "NODE_ENV": "production"
   }
