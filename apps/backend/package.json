@@ -6,7 +6,7 @@
     "start": "node dist/server.js",
     "dev": "nodemon --watch src --exec 'tsx src/server.ts' -e ts",
     "build": "prisma generate && rimraf dist && tsc && npm run copy-assets",
-    "vercel-build": "prisma generate && prisma db push && tsc",
+    "vercel-build": "prisma generate && prisma db push && tsc && pnpm seed",
     "copy-assets": "copyfiles -f src/templates/**/* dist/templates/email",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
