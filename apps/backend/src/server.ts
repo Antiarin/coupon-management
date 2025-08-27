@@ -58,10 +58,12 @@ app.get('/health', (_req: Request, res: Response) => {
 // API routes
 app.use('/api', apiRouter);
 
-// Root route for debugging
+// Root route - Backend running confirmation
 app.get('/', (_req: Request, res: Response) => {
   res.json({ 
-    message: 'Pantum Coupon System API',
+    status: 'Backend Running',
+    message: 'Pantum Coupon System API is operational',
+    version: '1.0.0',
     endpoints: {
       health: '/health',
       api: '/api/*'
