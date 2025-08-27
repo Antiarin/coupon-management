@@ -1,20 +1,16 @@
 {
   "version": 2,
+  "buildCommand": "turbo run build --filter=backend",
+  "outputDirectory": "apps/backend/dist",
   "builds": [
-    {
-      "src": "apps/frontend/package.json",
-      "use": "@vercel/next",
-      "config": {
-        "distDir": ".next"
-      }
-    },
     {
       "src": "apps/backend/dist/server.js",
       "use": "@vercel/node",
       "config": {
         "includeFiles": [
           "apps/backend/prisma/schema.prisma",
-          "apps/backend/dist/**"
+          "apps/backend/dist/**",
+          "apps/backend/src/templates/**"
         ]
       }
     }
@@ -26,7 +22,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "apps/frontend/$1"
+      "dest": "apps/backend/dist/server.js"
     }
   ],
   "env": {
