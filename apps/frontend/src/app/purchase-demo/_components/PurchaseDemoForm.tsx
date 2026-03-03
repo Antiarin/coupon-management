@@ -120,7 +120,7 @@ export default function PurchaseDemoForm() {
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
             Thank you for your purchase!
           </h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-700 mb-6">
             Your order has been processed successfully and a discount coupon has been generated.
           </p>
         </div>
@@ -141,7 +141,7 @@ export default function PurchaseDemoForm() {
               <div className="text-2xl font-mono bg-white p-4 rounded-lg border-2 border-dashed border-green-400">
                 {purchaseResult.coupon.code}
               </div>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-gray-700">
                 Valid until {new Date(purchaseResult.coupon.expiresAt).toLocaleDateString()}
               </div>
             </div>
@@ -216,7 +216,7 @@ export default function PurchaseDemoForm() {
         <h2 className="text-3xl font-bold text-gray-900 mb-4">
           Demo Product Purchase
         </h2>
-        <p className="text-gray-600">
+        <p className="text-gray-700">
           Simulate a product purchase to see the automatic coupon generation system in action
         </p>
       </div>
@@ -235,7 +235,7 @@ export default function PurchaseDemoForm() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-4" role="radiogroup" aria-label="Select a product">
                 {demoProducts.map((product) => (
                   <div
                     key={product.id}
@@ -245,6 +245,11 @@ export default function PurchaseDemoForm() {
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                     onClick={() => setSelectedProduct(product)}
+                    role="radio"
+                    aria-checked={selectedProduct.id === product.id}
+                    tabIndex={0}
+                    aria-label={`${product.name} - $${product.price}`}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSelectedProduct(product); }}
                   >
                     <div className="flex items-center gap-4">
                       <div className="relative w-16 h-16 rounded-lg overflow-hidden">
@@ -253,6 +258,8 @@ export default function PurchaseDemoForm() {
                           alt={product.name}
                           fill
                           className="object-cover"
+                          loading="lazy"
+                          sizes="64px"
                         />
                       </div>
                       <div className="flex-1">
@@ -306,7 +313,7 @@ export default function PurchaseDemoForm() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-700">
                   Coupon will be generated for this email
                 </p>
               </div>
@@ -354,7 +361,7 @@ export default function PurchaseDemoForm() {
                 Complete Demo Purchase
               </Button>
 
-              <div className="text-xs text-gray-500 text-center">
+              <div className="text-xs text-gray-700 text-center">
                 This is a demo purchase. No actual payment will be processed.
               </div>
             </CardContent>

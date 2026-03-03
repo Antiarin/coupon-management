@@ -109,18 +109,18 @@ export default function AdminDashboard() {
     <>
       {/* Error States */}
       {analyticsError && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+        <div role="alert" className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
           Failed to load analytics: {analyticsError.message}
         </div>
       )}
       {couponsError && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+        <div role="alert" className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
           Failed to load coupons: {couponsError.message}
         </div>
       )}
 
       {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8" role="region" aria-label="Coupon statistics">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Coupons</CardTitle>
@@ -181,18 +181,20 @@ export default function AdminDashboard() {
         <CardContent>
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" aria-hidden="true" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600" aria-hidden="true" />
               <Input
                 placeholder="Search coupons, customers, or order numbers..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
+                aria-label="Search coupons, customers, or order numbers"
               />
             </div>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
               className="px-3 py-2 border border-gray-300 rounded-md bg-white"
+              aria-label="Filter coupons by status"
             >
               <option value="all">All Status</option>
               <option value="ACTIVE">Active</option>
@@ -215,12 +217,13 @@ export default function AdminDashboard() {
         </CardHeader>
         <CardContent>
           {couponsLoading ? (
-            <div className="flex items-center justify-center py-12">
+            <div className="flex items-center justify-center py-12" role="status" aria-label="Loading coupons">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              <span className="sr-only">Loading coupons...</span>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full" aria-label="Coupons list">
                 <thead>
                   <tr className="border-b">
                     <th className="text-left py-3 px-4">Code</th>
@@ -242,7 +245,7 @@ export default function AdminDashboard() {
                       </td>
                       <td className="py-3 px-4">
                         <span className="font-medium">{formatDiscount(coupon)}</span>
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-gray-600">
                           {coupon.discountType === 'PERCENTAGE' ? 'Percentage' : 'Fixed'}
                         </div>
                       </td>
@@ -256,7 +259,7 @@ export default function AdminDashboard() {
                           <div className="font-medium">
                             {coupon.purchaseOrder?.customerName || 'Manual'}
                           </div>
-                          <div className="text-gray-500">
+                          <div className="text-gray-600">
                             {coupon.purchaseOrder?.email || '-'}
                           </div>
                         </div>
@@ -264,24 +267,24 @@ export default function AdminDashboard() {
                       <td className="py-3 px-4">
                         <div className="text-sm">
                           <span className="font-medium">{coupon.usedCount}</span>
-                          <span className="text-gray-500"> / {coupon.usageLimit}</span>
+                          <span className="text-gray-600"> / {coupon.usageLimit}</span>
                         </div>
                       </td>
                       <td className="py-3 px-4 text-sm">
                         <div className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3 text-gray-400" aria-hidden="true" />
+                          <Calendar className="h-3 w-3 text-gray-600" aria-hidden="true" />
                           {formatDate(coupon.expiresAt)}
                         </div>
                       </td>
                       <td className="py-3 px-4">
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" aria-label={`View details for coupon ${coupon.code}`}>
                           <Eye className="h-4 w-4" aria-hidden="true" />
                         </Button>
                       </td>
                     </tr>
                   )) || (
                     <tr>
-                      <td colSpan={7} className="py-8 px-4 text-center text-gray-500">
+                      <td colSpan={7} className="py-8 px-4 text-center text-gray-600">
                         No coupons found
                       </td>
                     </tr>
@@ -325,7 +328,7 @@ export default function AdminDashboard() {
                 <div key={coupon.id} className="flex justify-between items-center py-2 border-b last:border-b-0">
                   <div>
                     <code className="text-xs bg-gray-100 px-1 rounded">{coupon.code}</code>
-                    <div className="text-gray-500 text-xs mt-1">
+                    <div className="text-gray-600 text-xs mt-1">
                       Created {formatDate(coupon.createdAt)}
                     </div>
                   </div>
@@ -334,7 +337,7 @@ export default function AdminDashboard() {
                   </Badge>
                 </div>
               )) || (
-                <div className="text-gray-500 text-center py-4">
+                <div className="text-gray-600 text-center py-4">
                   No recent activity
                 </div>
               )}

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Gift, ArrowLeft, Loader2 } from 'lucide-react';
+import { Ticket, ArrowLeft, Loader2 } from 'lucide-react';
 import GenerateCouponForm from './_components/GenerateCouponForm';
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export default function GenerateCouponPage() {
               </Link>
             </Button>
             <div className="flex items-center gap-2">
-              <Gift className="h-6 w-6 text-purple-600" aria-hidden="true" />
+              <Ticket className="h-6 w-6 text-purple-600" aria-hidden="true" />
               <h1 className="text-xl font-bold text-gray-900">Generate Coupon</h1>
             </div>
           </div>
