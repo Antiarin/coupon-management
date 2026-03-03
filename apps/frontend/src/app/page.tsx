@@ -145,7 +145,7 @@ export default function HomePage() {
                   Pantum Coupons
                 </span>
               </h1>
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              <p className="text-xl text-gray-700 mb-8 leading-relaxed">
                 Your one-stop solution for generating, validating, and managing discount coupons
                 for Pantum products. Get exclusive deals after every purchase!
               </p>
@@ -211,7 +211,7 @@ export default function HomePage() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-600">
                       Up to 25% off your next purchase
                     </p>
                   </CardContent>
@@ -267,7 +267,7 @@ export default function HomePage() {
 
                 <Card className="hover:shadow-lg transition-shadow">
                   <CardHeader className="text-center">
-                    <Phone className="h-12 w-12 text-green-600 mx-auto mb-4" aria-hidden="true" />
+                    <Gift className="h-12 w-12 text-green-600 mx-auto mb-4" aria-hidden="true" />
                     <CardTitle>Generate Coupon                    </CardTitle>
                     <CardDescription>
                       Use your invoice and phone number to generate a new discount coupon
@@ -316,10 +316,10 @@ export default function HomePage() {
                   >
                     <summary className="flex items-center justify-between p-4 sm:p-6 cursor-pointer font-medium text-gray-900 hover:bg-gray-50 transition-colors">
                       <span className="text-sm sm:text-base pr-4">{faq.question}</span>
-                      <ArrowRight className="h-4 w-4 text-gray-400 shrink-0 transition-transform group-open:rotate-90" aria-hidden="true" />
+                      <ArrowRight className="h-4 w-4 text-gray-500 shrink-0 transition-transform group-open:rotate-90" aria-hidden="true" />
                     </summary>
                     <div className="px-4 pb-4 sm:px-6 sm:pb-6">
-                      <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{faq.answer}</p>
+                      <p className="text-sm sm:text-base text-gray-700 leading-relaxed">{faq.answer}</p>
                     </div>
                   </details>
                 ))}
@@ -336,10 +336,10 @@ export default function HomePage() {
                 <Gift className="h-6 w-6" aria-hidden="true" />
                 <span className="text-xl font-semibold">Pantum Coupon System</span>
               </div>
-              <p className="text-gray-400 mb-4">
+              <p className="text-gray-400 mb-4" aria-label="Application description">
                 Demo version - Built with Next.js, Express.js, and PostgreSQL
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-400">
                 &copy; {new Date().getFullYear()} Pantum Coupon System. This is a demonstration application.
               </p>
             </div>

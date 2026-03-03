@@ -105,7 +105,7 @@ export default function ValidateCouponForm() {
           <div className="space-y-2">
             <Label htmlFor="order-value">Order Value *</Label>
             <div className="relative">
-              <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" aria-hidden="true" />
+              <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-700" aria-hidden="true" />
               <Input
                 id="order-value"
                 type="number"
@@ -118,7 +118,7 @@ export default function ValidateCouponForm() {
                 required
               />
             </div>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-700">
               Enter your order value to calculate the discount amount
             </p>
           </div>
@@ -145,7 +145,7 @@ export default function ValidateCouponForm() {
 
       {/* Results */}
       {error && (
-        <Card className="border-red-200 bg-red-50">
+        <Card className="border-red-200 bg-red-50" role="alert">
           <CardContent className="pt-6">
             <div className="flex items-center gap-3 text-red-700">
               <XCircle className="h-5 w-5" aria-hidden="true" />
@@ -159,7 +159,7 @@ export default function ValidateCouponForm() {
       )}
 
       {validation?.success && validation.data && (
-        <Card className="border-green-200 bg-green-50">
+        <Card className="border-green-200 bg-green-50" role="status" aria-label="Validation result">
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-2 text-green-700">
@@ -185,21 +185,21 @@ export default function ValidateCouponForm() {
 
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p className="text-gray-500 mb-1">Expires On</p>
+                  <p className="text-gray-700 mb-1">Expires On</p>
                   <p className="font-medium flex items-center gap-1">
                     <Calendar className="h-4 w-4" aria-hidden="true" />
                     {formatDate(validation.data.coupon.expiresAt)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-gray-500 mb-1">Usage Left</p>
+                  <p className="text-gray-700 mb-1">Usage Left</p>
                   <p className="font-medium">
                     {validation.data.coupon.usageLimit - validation.data.coupon.usedCount} / {validation.data.coupon.usageLimit}
                   </p>
                 </div>
                 {validation.data.coupon.minimumOrderValue && (
                   <div className="col-span-2">
-                    <p className="text-gray-500 mb-1">Minimum Order Value</p>
+                    <p className="text-gray-700 mb-1">Minimum Order Value</p>
                     <p className="font-medium flex items-center gap-1">
                       <ShoppingCart className="h-4 w-4" aria-hidden="true" />
                       ${validation.data.coupon.minimumOrderValue}
@@ -237,7 +237,7 @@ export default function ValidateCouponForm() {
             {validation.data.coupon.product && (
               <div className="bg-white rounded-lg p-4 border">
                 <h4 className="font-medium mb-3">Related Product</h4>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-700">
                   <span className="font-medium">{validation.data.coupon.product.name}</span>
                   <br />
                   Category: {validation.data.coupon.product.category}
@@ -268,10 +268,14 @@ export default function ValidateCouponForm() {
                 key={sample.code}
                 className="flex items-center justify-between p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100"
                 onClick={() => setCouponCode(sample.code)}
+                role="button"
+                tabIndex={0}
+                aria-label={`Use sample coupon ${sample.code}`}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setCouponCode(sample.code); }}
               >
                 <div>
                   <code className="font-mono text-sm font-bold">{sample.code}</code>
-                  <p className="text-xs text-gray-500">{sample.description}</p>
+                  <p className="text-xs text-gray-700">{sample.description}</p>
                 </div>
                 <Button variant="ghost" size="sm">
                   Use This

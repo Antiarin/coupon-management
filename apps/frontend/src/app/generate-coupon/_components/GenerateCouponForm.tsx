@@ -215,10 +215,10 @@ export default function GenerateCouponForm() {
   return (
     <div className="max-w-2xl mx-auto">
       {/* Progress Steps */}
-      <div className="mb-8">
+      <nav className="mb-8" aria-label="Coupon generation progress">
         <div className="flex items-center justify-center">
-          <div className="flex items-center gap-4">
-            <div className={`flex items-center gap-2 ${currentStep === 'input' ? 'text-purple-600' : 'text-gray-400'}`}>
+          <div className="flex items-center gap-4" role="list">
+            <div role="listitem" className={`flex items-center gap-2 ${currentStep === 'input' ? 'text-purple-600' : 'text-gray-700'}`} aria-current={currentStep === 'input' ? 'step' : undefined}>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                 currentStep === 'input' ? 'bg-purple-600 text-white' : 'bg-gray-200'
               }`}>
@@ -227,9 +227,9 @@ export default function GenerateCouponForm() {
               <span className="font-medium">Enter Details</span>
             </div>
 
-            <ArrowRight className="h-4 w-4 text-gray-400" aria-hidden="true" />
+            <ArrowRight className="h-4 w-4 text-gray-700" aria-hidden="true" />
 
-            <div className={`flex items-center gap-2 ${currentStep === 'otp' ? 'text-purple-600' : 'text-gray-400'}`}>
+            <div role="listitem" className={`flex items-center gap-2 ${currentStep === 'otp' ? 'text-purple-600' : 'text-gray-700'}`} aria-current={currentStep === 'otp' ? 'step' : undefined}>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                 currentStep === 'otp' ? 'bg-purple-600 text-white' :
                 currentStep === 'success' ? 'bg-green-600 text-white' : 'bg-gray-200'
@@ -239,9 +239,9 @@ export default function GenerateCouponForm() {
               <span className="font-medium">Verify OTP</span>
             </div>
 
-            <ArrowRight className="h-4 w-4 text-gray-400" aria-hidden="true" />
+            <ArrowRight className="h-4 w-4 text-gray-700" aria-hidden="true" />
 
-            <div className={`flex items-center gap-2 ${currentStep === 'success' ? 'text-green-600' : 'text-gray-400'}`}>
+            <div role="listitem" className={`flex items-center gap-2 ${currentStep === 'success' ? 'text-green-600' : 'text-gray-700'}`} aria-current={currentStep === 'success' ? 'step' : undefined}>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                 currentStep === 'success' ? 'bg-green-600 text-white' : 'bg-gray-200'
               }`}>
@@ -251,7 +251,7 @@ export default function GenerateCouponForm() {
             </div>
           </div>
         </div>
-      </div>
+      </nav>
 
       {/* Step 1: Input Form */}
       {currentStep === 'input' && (
@@ -269,7 +269,7 @@ export default function GenerateCouponForm() {
             <div className="space-y-2">
               <Label htmlFor="invoice-number">Invoice Number *</Label>
               <div className="relative">
-                <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" aria-hidden="true" />
+                <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-700" aria-hidden="true" />
                 <Input
                   id="invoice-number"
                   placeholder="e.g. INV-2024-001"
@@ -283,7 +283,7 @@ export default function GenerateCouponForm() {
             <div className="space-y-2">
               <Label htmlFor="phone-number">Phone Number *</Label>
               <div className="relative">
-                <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" aria-hidden="true" />
+                <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-700" aria-hidden="true" />
                 <Input
                   id="phone-number"
                   placeholder="e.g. +1234567890"
@@ -294,10 +294,10 @@ export default function GenerateCouponForm() {
                   disabled={isLoadingInvoice}
                 />
                 {isLoadingInvoice && (
-                  <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500 animate-spin" aria-hidden="true" />
+                  <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-700 animate-spin" aria-hidden="true" />
                 )}
               </div>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-700">
                 {isLoadingInvoice ? 'Fetching phone number...' : 'We\'ll send a verification code to this number'}
               </p>
             </div>
@@ -327,6 +327,10 @@ export default function GenerateCouponForm() {
                       key={inv}
                       className="flex items-center justify-between p-2 bg-white rounded cursor-pointer hover:bg-gray-100"
                       onClick={() => setInvoiceNumber(inv)}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Use invoice number ${inv}`}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setInvoiceNumber(inv); }}
                     >
                       <code className="font-mono">{inv}</code>
                       <Button variant="ghost" size="sm">Use</Button>
@@ -370,7 +374,7 @@ export default function GenerateCouponForm() {
                 maxLength={6}
               />
               {otpTimer > 0 && (
-                <p className="text-sm text-gray-500 flex items-center justify-center gap-1">
+                <p className="text-sm text-gray-700 flex items-center justify-center gap-1">
                   <Clock className="h-3 w-3" aria-hidden="true" />
                   Code expires in {formatTimer(otpTimer)}
                 </p>
@@ -433,7 +437,7 @@ export default function GenerateCouponForm() {
           <CardContent className="space-y-6">
             <div className="bg-white rounded-lg p-6 border-2 border-dashed border-green-300 text-center">
               <Gift className="h-12 w-12 mx-auto mb-4 text-green-600" aria-hidden="true" />
-              <p className="text-sm text-gray-600 mb-2">Your Coupon Code</p>
+              <p className="text-sm text-gray-700 mb-2">Your Coupon Code</p>
               <div className="flex items-center justify-center gap-4">
                 <div className="text-3xl font-bold font-mono text-green-600">
                   {generatedCoupon.code}
@@ -442,6 +446,7 @@ export default function GenerateCouponForm() {
                   variant="outline"
                   size="sm"
                   onClick={handleCopyCoupon}
+                  aria-label="Copy coupon code to clipboard"
                 >
                   <Copy className="h-4 w-4" aria-hidden="true" />
                 </Button>
@@ -457,16 +462,16 @@ export default function GenerateCouponForm() {
               <h4 className="font-medium text-gray-700">Coupon Details</h4>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p className="text-gray-500">Valid Until</p>
+                  <p className="text-gray-700">Valid Until</p>
                   <p className="font-medium">{formatDate(generatedCoupon.expiresAt)}</p>
                 </div>
                 <div>
-                  <p className="text-gray-500">Usage Limit</p>
+                  <p className="text-gray-700">Usage Limit</p>
                   <p className="font-medium">{generatedCoupon.usageLimit} time(s)</p>
                 </div>
                 {generatedCoupon.minimumOrderValue && (
                   <div className="col-span-2">
-                    <p className="text-gray-500">Minimum Order</p>
+                    <p className="text-gray-700">Minimum Order</p>
                     <p className="font-medium">${generatedCoupon.minimumOrderValue}</p>
                   </div>
                 )}
