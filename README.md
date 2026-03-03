@@ -1,309 +1,150 @@
 # Pantum Coupon Generation & Management System
 
-A full-stack TypeScript application for generating, validating, and managing discount coupons for Pantum products. Built with Next.js, Express.js, and PostgreSQL in a turborepo monorepo structure.
+A full-stack TypeScript application for generating, validating, and managing discount coupons for Pantum products. Built with Next.js 16, Express.js, and PostgreSQL in a Turborepo monorepo.
 
-![Demo Screenshot](https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=400&fit=crop)
+**Live Demo:** https://coupon-management-frontend.vercel.app
 
-## 🚀 Features
+## Features
 
-### Core Functionality
-- **Automatic Coupon Generation**: Generate unique coupon codes after product purchase
-- **Flexible Discount Rules**: Support for percentage and fixed-amount discounts
-- **Smart Validation**: Real-time coupon validation with configurable rules
-- **Usage Tracking**: Monitor coupon usage and enforce limits
-- **Email Delivery**: Automatic coupon delivery via email (demo mode available)
+- **Coupon Generation** with OTP verification via phone number
+- **Coupon Validation** with real-time discount calculation
+- **Admin Dashboard** with analytics, search, and filtering
+- **Demo Purchase Flow** to simulate end-to-end coupon lifecycle
+- **PWA Support** with manifest and icons
+- **SEO Optimized** with structured data, sitemap, robots.txt, and Open Graph tags
+- **Accessible** (WCAG AA compliant) with ARIA labels and keyboard navigation
+- **Security Headers** (CSP, HSTS, X-Frame-Options, COOP, etc.)
+- **Google Analytics** integration
 
-### Admin Panel
-- **Dashboard Analytics**: Track coupon statistics and usage rates
-- **Coupon Management**: View, search, and filter all issued coupons
-- **Manual Creation**: Create custom coupons with specific rules
-- **Real-time Updates**: Live data with React Query
+## Tech Stack
 
-### Demo Features
-- **Spoofed Invoice Parsing**: Always returns success for demo purposes
-- **Sample Data**: Pre-seeded database with realistic demo data
-- **Mock Email Delivery**: Simulated email sending for testing
+| Layer | Technology |
+|---|---|
+| Frontend | Next.js 16, React 19, Tailwind CSS, Radix UI, TanStack Query |
+| Backend | Express.js, Prisma ORM, Zod validation, Nodemailer |
+| Database | PostgreSQL (Neon) |
+| Monorepo | Turborepo, pnpm |
+| Deployment | Vercel (frontend), Railway (backend) |
 
-## 🏗️ Tech Stack
-
-### Frontend (Next.js 14)
-- **Framework**: Next.js 14 with App Router
-- **Styling**: Tailwind CSS + shadcn/ui components
-- **State Management**: TanStack Query (React Query)
-- **TypeScript**: Full type safety
-- **UI Components**: Radix UI primitives
-
-### Backend (Express.js)
-- **Runtime**: Node.js with Express.js
-- **Database**: PostgreSQL with Prisma ORM
-- **Authentication**: JWT-based (ready for implementation)
-- **Validation**: Zod schema validation
-- **Email**: Nodemailer integration
-- **Security**: Helmet, CORS, rate limiting
-
-### Infrastructure
-- **Monorepo**: Turborepo for build optimization
-- **Package Manager**: pnpm for efficient dependency management
-- **Deployment**: Vercel-ready configuration
-- **Database**: PostgreSQL (compatible with Vercel Postgres)
-
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - pnpm
 - PostgreSQL database
 
-### Installation
+### Setup
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd pantum-coupon-system
-   ```
+```bash
+# Clone and install
+git clone https://github.com/Antiarin/coupon-management.git
+cd pantum-coupon-system
+pnpm install
 
-2. **Install dependencies**
-   ```bash
-   pnpm install
-   ```
+# Configure environment
+cp apps/backend/.env.example apps/backend/.env
+cp apps/frontend/.env.example apps/frontend/.env.local
+# Edit both files with your values
 
-3. **Set up environment variables**
-   
-   **Backend (.env)**:
-   ```bash
-   cp apps/backend/.env.example apps/backend/.env
-   ```
-   
-   Edit `apps/backend/.env` with your database and email settings:
-   ```env
-   DATABASE_URL="postgresql://username:password@localhost:5432/pantum_coupons"
-   JWT_SECRET="your-super-secret-jwt-key"
-   SMTP_HOST="smtp.gmail.com"
-   SMTP_USER="your-email@gmail.com"
-   SMTP_PASS="your-app-password"
-   DEMO_MODE=true
-   ```
+# Set up database
+cd apps/backend
+pnpm db:push
+pnpm seed
+cd ../..
 
-   **Frontend (.env.local)**:
-   ```bash
-   cp apps/frontend/.env.example apps/frontend/.env.local
-   ```
-   
-   ```env
-   NEXT_PUBLIC_API_URL=http://localhost:3001/api
-   ```
-
-4. **Set up the database**
-   ```bash
-   cd apps/backend
-   pnpm db:push
-   pnpm seed
-   ```
-
-5. **Start development servers**
-   ```bash
-   # From root directory
-   pnpm dev
-   ```
-
-   This starts:
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:3001
-
-## 📱 Usage
-
-### For Customers
-
-1. **Purchase Demo**: Visit `/purchase-demo` to simulate a product purchase
-2. **Get Coupon**: Receive a unique coupon code automatically
-3. **Validate Coupon**: Use `/validate-coupon` to check coupon validity and calculate discounts
-
-### For Administrators
-
-1. **Admin Dashboard**: Visit `/admin` to access the management panel
-2. **View Analytics**: Monitor coupon statistics and usage rates
-3. **Manage Coupons**: Search, filter, and manage all issued coupons
-4. **Create Manual Coupons**: Generate custom coupons with specific rules
-
-### API Endpoints
-
-#### Coupon Management
-- `GET /api/coupons/validate/:code` - Validate a coupon code
-- `POST /api/coupons/apply` - Apply/use a coupon
-- `GET /api/coupons/:code` - Get coupon details
-
-#### Purchase System
-- `POST /api/purchases/create` - Create purchase and generate coupon
-- `POST /api/purchases/validate-invoice` - Validate invoice/serial number
-
-#### Admin Panel
-- `GET /api/admin/coupons` - List all coupons with filters
-- `POST /api/admin/coupons` - Create manual coupon
-- `GET /api/admin/analytics` - Get system statistics
-
-## 🚀 Deployment
-
-### Vercel Deployment
-
-The application is optimized for Vercel deployment with both frontend and serverless backend.
-
-1. **Fork/Clone to GitHub**
-
-2. **Deploy Frontend to Vercel**
-   - Import your GitHub repository
-   - Set root directory to `apps/frontend`
-   - Configure environment variables:
-     ```
-     NEXT_PUBLIC_API_URL=https://your-backend-url.vercel.app/api
-     ```
-
-3. **Deploy Backend to Vercel**
-   - Create another Vercel project for the backend
-   - Set root directory to `apps/backend`
-   - Configure environment variables (database, SMTP, etc.)
-
-4. **Set up PostgreSQL**
-   - Use Vercel Postgres, Neon, or any PostgreSQL provider
-   - Update `DATABASE_URL` in backend environment
-
-5. **Initialize Database**
-   ```bash
-   pnpm db:push
-   pnpm seed
-   ```
-
-### Docker Deployment
-
-```dockerfile
-# Example Dockerfile for backend
-FROM node:18-alpine
-WORKDIR /app
-COPY apps/backend ./
-RUN npm install
-RUN npm run build
-EXPOSE 3001
-CMD ["npm", "start"]
+# Start development
+pnpm dev
 ```
 
-## 📊 Database Schema
+This starts:
+- Frontend: http://localhost:3010
+- Backend API: http://localhost:7010
 
-### Key Tables
+## Project Structure
 
-- **coupons**: Store coupon codes, discounts, and rules
-- **users**: Customer information and admin accounts
-- **products**: Pantum product catalog
-- **purchase_orders**: Order records and invoice details
-- **coupon_usage**: Track coupon redemptions
-- **coupon_rules**: Flexible rule configurations
-
-## 🔧 Development
-
-### Project Structure
 ```
 pantum-coupon-system/
 ├── apps/
-│   ├── frontend/          # Next.js application
+│   ├── frontend/          # Next.js 16 app
 │   └── backend/           # Express.js API
 ├── packages/
 │   ├── ui/                # Shared UI components
 │   ├── eslint-config/     # Shared ESLint config
 │   └── typescript-config/ # Shared TypeScript config
-├── turbo.json            # Turborepo configuration
-└── package.json          # Root package.json
+├── turbo.json
+└── package.json
 ```
 
-### Available Scripts
+## API Endpoints
+
+### Coupons
+- `GET /api/coupons/validate/:code?orderValue=` - Validate a coupon
+- `POST /api/coupons/apply` - Apply/use a coupon
+
+### Generate Coupon (OTP Flow)
+- `POST /api/generate/request-otp` - Send OTP to phone
+- `POST /api/generate/verify-and-generate` - Verify OTP and generate coupon
+- `POST /api/generate/resend-otp` - Resend OTP
+- `GET /api/generate/invoice/:id` - Lookup invoice details
+
+### Purchases
+- `POST /api/purchases/create` - Create purchase and generate coupon
+
+### Admin
+- `GET /api/admin/coupons` - List coupons (with search/filter)
+- `POST /api/admin/coupons` - Create manual coupon
+- `GET /api/admin/analytics` - Dashboard statistics
+
+## Deployment
+
+### Frontend (Vercel)
+
+1. Import repo on Vercel, set root directory to `apps/frontend`
+2. Add environment variables:
+   ```
+   NEXT_PUBLIC_API_URL=https://your-backend.railway.app/api
+   NEXT_PUBLIC_BASE_URL=https://your-domain.com
+   NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+   ```
+
+### Backend (Railway)
+
+1. Create a new Railway project, connect your GitHub repo
+2. Set root directory to `apps/backend`
+3. Add environment variables from `apps/backend/.env.example`
+4. Railway will use the existing Dockerfile
+
+### Database
+
+Use any PostgreSQL provider (Neon, Supabase, Railway Postgres). Update `DATABASE_URL` in your backend environment.
+
+## Scripts
 
 ```bash
-# Development
-pnpm dev              # Start all applications
-pnpm build            # Build all applications
+pnpm dev              # Start all apps
+pnpm build            # Build all apps
 pnpm lint             # Lint all packages
 pnpm check-types      # Type checking
 
-# Database
-pnpm db:generate      # Generate Prisma client
+# Database (from apps/backend)
 pnpm db:push          # Push schema changes
 pnpm db:studio        # Open Prisma Studio
 pnpm seed             # Seed demo data
 ```
 
-### Adding New Features
+## SEO
 
-1. **Backend API Endpoint**: Add to `apps/backend/src/routes/`
-2. **Frontend Page**: Add to `apps/frontend/src/app/`
-3. **UI Component**: Add to `packages/ui/src/` for sharing
-4. **Database Changes**: Update `apps/backend/prisma/schema.prisma`
+- Structured data (JSON-LD) for Organization, WebApplication, BreadcrumbList, and FAQPage
+- Dynamic sitemap with ISR revalidation at `/sitemap.xml`
+- Robots.txt with public/private route rules at `/robots.txt`
+- Open Graph and Twitter Card meta tags on all pages
+- Canonical URLs with `alternates.canonical`
+- Google Analytics via `@next/third-parties`
+- PWA manifest with app icons
+- Semantic HTML with proper heading hierarchy
+- Static generation on the home page for fast LCP
 
-## 🧪 Demo Data
+## License
 
-The system comes with pre-seeded demo data:
-
-- **Sample Coupons**: Various discount types and statuses
-- **Demo Products**: Pantum printers, cartridges, and accessories
-- **Test Users**: Admin and customer accounts
-- **Purchase Orders**: Realistic order history
-
-### Sample Coupon Codes (for testing)
-- `SAVE-15-DEMO` - 15% discount coupon
-- `FLAT-20-TEST` - $20 fixed discount
-- `EXPIRED-DEMO` - Expired coupon (for error testing)
-
-## 🛡️ Security Features
-
-- **Rate Limiting**: API protection against abuse
-- **Input Validation**: Zod schema validation
-- **SQL Injection Protection**: Prisma ORM parameterized queries
-- **CORS Configuration**: Controlled cross-origin access
-- **Helmet Security**: HTTP security headers
-
-## 📈 Analytics & Monitoring
-
-- **Usage Statistics**: Track coupon generation and redemption
-- **Performance Metrics**: Monitor API response times
-- **Error Tracking**: Comprehensive logging system
-- **Admin Dashboard**: Real-time analytics visualization
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push to branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-- **Documentation**: Check this README and inline code comments
-- **Issues**: Report bugs via GitHub Issues
-- **Email**: Contact support@pantum.com (in production)
-
-## 🎯 Roadmap
-
-### Phase 1 (Current)
-- ✅ Basic coupon generation and validation
-- ✅ Admin panel with analytics
-- ✅ Demo mode with sample data
-- ✅ Vercel deployment ready
-
-### Phase 2 (Future)
-- [ ] User authentication and profiles
-- [ ] Advanced coupon rules engine
-- [ ] Bulk coupon operations
-- [ ] Email template customization
-- [ ] Multi-language support
-
-### Phase 3 (Advanced)
-- [ ] API rate limiting per user
-- [ ] Webhook integrations
-- [ ] Advanced analytics dashboard
-- [ ] Mobile app support
-- [ ] Barcode/QR code generation
-
----
-
-Built with ❤️ for Pantum by the development team. This is a demonstration application showcasing modern full-stack development practices.
+MIT
